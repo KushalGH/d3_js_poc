@@ -11,27 +11,37 @@
         <h4>Using SVG</h4>
 
         <script>
-            var w = 500;
-            var h = 150;
+            var w = 250;
+            var h = 100;
             var padding = 2;
             var dataset = [5, 10, 15, 20, 25];
-
             var svg = d3.select("body")
-                        .append("svg")
-                            .attr("width", w)
-                            .attr("height", h);
-            
+                            .append("svg")
+                                .attr("width", w)
+                                .attr("height", h);
+    
+                                
             svg.selectAll("rect")
                 .data(dataset)
-                .enter()
-                .select("rect")
+                .enter() // If rect is not present then it will add "rect"
+                .append("rect")
                     .attr("x", function(d, i) {
-                        return (w / dataset.length) - padding;
+                        //return (i * 21); // 20 is the width of rectangle   
+                        return (i * (w / dataset.length)); 
                     })
-                    .attr("y", 0)
-                    .attr("width", 20)
-                    .attr("height", 150)
-
+                    .attr("y", function(d) {
+                        return h - (d * 4);
+                    }) // It will start from the top left. So the height 
+                                  // will be calculated based on top left downwards.
+                                  // We will fix this by setting the y to h - d                              
+                    .attr("width", (w / dataset.length) - padding)
+                    .attr("height", function(d, i) {
+                        return d * 4;
+                    })
+                    .style("fill", function(d, i) {
+                        return "rgb(" + (d* 10) + ", 0, 0)";
+                    })
+    
         </script>
     </body>
 </html>
