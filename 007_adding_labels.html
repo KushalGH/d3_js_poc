@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+        <script src="https://d3js.org/d3.v5.min.js"></script>   
+    </head>
+    <body>
+        <h3>Data Driven Diagrams</h3>
+        <h4>Using SVG</h4>
+
+        <script>
+            var w = 250;
+            var h = 150;
+            var padding = 2;
+            var dataset = [5, 10, 15, 20, 25, 
+                            11, 25, 22, 18, 7];
+            var svg = d3.select("body")
+                            .append("svg")
+                                .attr("width", w)
+                                .attr("height", h);
+    
+                                
+            svg.selectAll("rect")
+                .data(dataset)
+                .enter() // If rect is not present then it will add "rect"
+                .append("rect")
+                    .attr("x", function(d, i) {
+                        //return (i * 21); // 20 is the width of rectangle   
+                        return (i * (w / dataset.length)); 
+                    })
+                    .attr("y", function(d) {
+                        return h - (d * 4);
+                    }) // It will start from the top left. So the height 
+                                  // will be calculated based on top left downwards.
+                                  // We will fix this by setting the y to h - d                              
+                    .attr("width", (w / dataset.length) - padding)
+                    .attr("height", function(d, i) {
+                        return d * 4;
+                    })
+                    .style("fill", function(d, i) {
+                        return "rgb(" + (d* 10) + ", 0, 0)";
+                    })
+
+        svg.selectAll("text")
+            .data(dataset)
+            .enter()
+            .append("text")
+            .text(function(d) {
+                return d;
+            })
+            .attr("text-anchor", "middle")
+            .attr("x", function(d, i) 
+                { return i *  (w / dataset.length) + (w / dataset.length - padding) / 2; })
+            .attr("y", function(d) { return h - (d * 4) + 14 })
+            .attr("font-family", "sans-serif")
+            .attr("font-size", 12)
+            .style("fill", "#ffffff")
+
+    
+        </script>
+    </body>
+</html>

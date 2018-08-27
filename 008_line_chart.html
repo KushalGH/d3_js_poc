@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+        <script src="https://d3js.org/d3.v5.min.js"></script>   
+    </head>
+    <body>
+        <h3>Data Driven Diagrams</h3>
+        <h4>Using D3JS</h4>
+
+        <script>
+           // $(document).on("load", function() {
+                alert("as")
+                var h = 100;
+            var w = 200;
+
+            var monthlysales = [
+                { "month": 10, "sales": 20  },
+                { "month": 20, "sales": 14  },
+                { "month": 30, "sales": 20  },
+                { "month": 40, "sales": 21  },
+                { "month": 50, "sales": 15  },
+                { "month": 60, "sales": 22  },
+                { "month": 70, "sales": 9  },
+                { "month": 80, "sales": 6  },
+                { "month": 90, "sales": 23  },
+                { "month": 100, "sales": 7  },
+            ];
+
+            // line is an operator that generates some really interesting SVG HTML for us
+            // to draw a line
+            /* in D3 v3 version.
+            https://stackoverflow.com/questions/40198378/interpolate-is-not-a-function
+
+            var lineFun = d3.line()
+                    .x(function(d) { return d.month*2 })
+                    .y(function(d) { return d.sales })
+                    .interpolate("Linear");
+
+            */
+
+            var lineFun = d3.line()
+                    .x(function(d) { return d.month*2 })
+                    .y(function(d) { return d.sales })
+                    .curve(d3.Liner);
+
+            var svg = d3.select("body")
+                        .append("svg")
+                        .attr("width", w)
+                        .attr("height", h);
+
+            // path: this is the special kind of SVG which allows us to draw things using data.
+            // It can draw any number of things including rectanles, squares, circles
+            // It can draw maps which are actually polygons. it essentially takes that data and
+            // draws that shape for us.
+            var viz = svg.append("path")  
+                        .attr({
+                            d: lineFun(monthlysales),
+                            "strokes": "purple",
+                            "stroke-width": 2,
+                            "fill": "none"
+                        })
+            /*
+                        .attr("d", lineFun(monthlysales))                              
+                        .attr("stroke", "red")
+                        .attr("stroke-width", 2)
+                        .attr("fill", "none");
+            */            
+           // });
+
+           // https://stackoverflow.com/questions/37619798/d3-svg-line-error-uncaught-typeerror-cannot-read-property-line-of-undefine/37623637             
+        </script>
+
+    </body>
+</html>
