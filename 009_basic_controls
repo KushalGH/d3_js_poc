@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <!--
+      manifest.json provides metadata used when your web app is added to the
+      homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div>
+        <p>First paragraph</p>
+        <p>Second paragraph</p>
+        <p id="p3">Third Paragraph</p>
+        <p class="myclass"> Fourth Paragraph</p>
+        <p class="myclass"> Fifth Paragraph</p>
+        <table>
+            <tr>
+                <td id="tr1id">
+                    One
+                </td>
+                <td>
+                    Two
+                </td>
+            </tr>
+        </table>
+        <p class="textpractice"></p>
+        <p class="appendpractice"></p>
+        <p class="insertpractice"></p>
+        <p class="removep"> remove Me</p> 
+        <p class="htmlp"> Used HTML </p>
+        <p id="errorp">This is error p tag</p>
+        <input id="checkbox" type="checkbox" /> 
+        <p id="testclassed">This is Classed</p>  
+        <p class="funcdata"></p>
+        <p class="funcdata"></p>
+        <p class="funcdata"></p>
+        <p class="dynamicfunc">Error: This is dummy error.</p>
+        <p class="dynamicfunc">Warning:This is dummy warning.</p>  
+        <p class="dynamicfunc">text:This is dummy text.</p>      
+
+    </div>
+    <div class="eventhandling"></div>
+    <div id="container"></div>
+    <div id="root"></div>
+    <div>
+        <p id="entermethod"></p>
+    </div>
+    <style>
+        .myclass{
+            color: red
+        }
+        .errorclass{
+            color: red 
+        }
+        .classedcheck { color: violet  }
+
+        .eventhandling
+        {
+            height: 100px;
+            width: 100px;
+            background-color: steelblue;
+            margin:5px;
+        }    
+
+        #container {
+            height: 100px;
+            width: 100px;
+            background-color: black;
+        }
+    </style>
+  </body>
+  <script>
+      var data = [1, 2, 3];
+      d3.select("p").style("color", "green");
+      d3.select("#p3").style("color", "orange");
+      d3.selectAll(".myclass").style("color", "blue");
+      //d3.select("tr").selectAll("td").style('background-color','yellow');
+      //d3.select("tr").selectAll("td").select("#tr1id").style('background-color','blue');
+      d3.select("tr").selectAll("td").style('background-color','yellow');
+      d3.select("tr").select("#tr1id").style('background-color','blue');
+      d3.select(".textpractice").text("Dynamic manipulation");
+      d3.select(".appendpractice").append("p").text("This is appended text");
+      d3.select(".insertpractice").insert("p");
+      d3.select(".removep").remove();
+      d3.select(".htmlp").html("<span>This is added using HTML function</span>");
+      d3.select("#errorp").attr("class", "errorclass");
+      d3.select("#checkbox").property("checked", true);
+      // used to add\remove the css
+      d3.select("#testclassed").classed("classedcheck", true);
+      d3.selectAll(".funcdata").data(data)
+            .text(function(data, index) {
+                console.log(data);
+                console.log(index);
+                console.log(this); // the current DOM object
+                return data;
+            });
+
+       d3.selectAll(".dynamicfunc").style("color", function() {
+           var text = this.innerText;
+           if(text.indexOf("error") > 0) {
+               return "red"
+           }
+           else if(text.indexOf("warning") > 0) {
+               return "yellow"
+           }
+           else {
+               return "black"
+           }
+       });   
+       d3.selectAll(".eventhandling").on("mouseover", function() {
+           d3.select(this).style("background-color", "orange");
+       }).on("mouseout", function() {
+           d3.select(this).style("background-color", "green");
+       });
+
+       /*
+       selection.transition()	this schedules a transition for the selected elements
+       transition.duration()	duration specifies the animation duration in milliseconds for each element
+       transition.ease()	ease specifies the easing function, example: linear, elastic, bounce
+       transition.delay()	delay specifies the delay in animation in milliseconds for each element
+       */
+       d3.select("#container").transition().duration(1000)
+            .style("background-color", "red");
+
+       /* enter() In the above example, we have seen that the data() function joins one on 
+       one mapping to the selection elements (nodes) and array values. 
+       But, what if number of elements (nodes) and data values are not matching?
+
+       The enter() method dynamically creates placeholder references corresponding 
+       to the number of data values. The output of enter() can be fed to append() 
+       method and append() will create DOM elements for which there are no corresponding 
+       DOM elements on the page.
+       */
+       var data2 = [4, 1, 6, 2, 8, 9];
+
+       d3.select("#entermethod").data(data2)
+                .enter()
+                .append("span")
+                .text(function(d){
+                    return "d" + " ";
+                })
+
+         var matrix = [
+                        [1, 2, 3, 4],
+                        [5, 6, 7, 8],
+                        [9, 10, 11, 12],
+                        [13, 14, 15, 16]
+                    ];
+
+        var tr = d3.select("body")
+            .append("table")  // adds <table>
+            .selectAll("tr")  // selects all <tr>
+            .data(matrix)      // joins matrix array 
+            .enter()           // create placeholders for each row in the array
+            .append("tr");// create <tr> in each placeholder
+
+        var td = tr.selectAll("td")
+            .data(function (d) {    // joins inner array of each row
+                console.log(d);
+                return d;
+            })
+            .enter()    // create placeholders for each element in an inner array
+            .append("td") // creates <td> in each placeholder
+            .text(function (d) {
+                console.log(d);
+                return d; // add value of each inner array as a text in <td>
+            });
+
+            var myData3 = ["Hello World!"];     
+
+            s3.csv("", function() {
+                
+            })                     
+
+  </script>
+</html>
